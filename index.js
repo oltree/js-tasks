@@ -26,31 +26,31 @@ console.log(showMassage(prompt('Введите букву!'))); */
 
 //task №6
 /* const newString = function (str) {
-	return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+	return str[0].toUpperCase() + str.slice(1).toLowerCase();
 };
 console.log(newString(prompt('Введите строку!'))); */
 
-/* const newString = (str) => str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+/* const newString = (str) => str[0].toUpperCase() + str.slice(1).toLowerCase();
 console.log(newString(prompt('Введите строку!'))); */
 
 
 //task №5
 /* const deleteChars = function (str) {
-	return `${str.slice(1, -1)}`;
+	return str.slice(1, -1);
 };
 console.log(deleteChars(prompt('Введите строку!'))); */
 
-/* const deleteChars = (str) => `${str.slice(1, -1)}`;
+/* const deleteChars = (str) => str.slice(1, -1);
 console.log(deleteChars(prompt('Введите строку!'))); */
 
 
 //task №4
 /* const getResult = function (number) {
-	return number % 2 === 0 ? true : false;
+	return number % 2 === 0;
 };
 console.log(getResult(prompt('Введите число!'))); */
 
-/* const getResult = (number) => number % 2 === 0 ? true : false;
+/* const getResult = (number) => number % 2 === 0;
 console.log(getResult(prompt('Введите число!'))); */
 
 
