@@ -72,22 +72,18 @@ const users = [
 ];
 
 const devibeByGender = (users) => {
-	const women = [];
-	const man = [];
 
-	users.forEach(({first_name, last_name, ...otherFields}) => {
+	return users.reduce((accumulator, {first_name, last_name, ...otherFields}) => {
 		const userToPush = {
 			...otherFields,
 			fulName: `${first_name} ${last_name}`,
 		}
 
-		userToPush.gender === 'Male' ? man.push(userToPush) : women.push(userToPush);
-	})
+		userToPush.gender === 'Male' ? accumulator.man.push(userToPush) : accumulator.women.push(userToPush);
 
-	return {
-		women, 
-		man
-	};
+		return accumulator;
+
+	}, {man: [], women: []})
 }
 console.log(devibeByGender(users));
 
@@ -138,15 +134,16 @@ console.log(mapReleases(newReleases));
 //task №7
 
 let ids = (releases) => {
-	const result = [];
 
-	releases.forEach(({id, rating}) => {
+	return releases.reduce((accumulator, {id, rating}) => {
+
 		if (rating[0] === 5) {
-			result.push(id);
+			accumulator.push(id);
 		}
-	})
 
-	return result;
+		return accumulator;
+
+	}, [])
 }
 
 console.log(ids(newReleases));
