@@ -58,7 +58,7 @@ const InfoAboutPokemons = async () => {
 
     return modifiedPokemonsMap(pokemonsMap);
   } catch (error) {
-    console.log("Error 100500!");
+    console.error("Error 100500!");
   }
 };
 
