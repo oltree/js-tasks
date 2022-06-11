@@ -5,6 +5,8 @@ const dataUsers = fetch(BASE_URL_1).then((response) => response.json());
 
 const dataTodos = fetch(BASE_URL_2).then((response) => response.json());
 
+//solution number 1
+
 /* const agrigateUsersTodos = async () => {
   try {
     const [usersList, todosList] = await Promise.all([dataUsers, dataTodos]);
