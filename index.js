@@ -1,28 +1,47 @@
 const BASE_URL_1 = "https://jsonplaceholder.typicode.com/users";
 const BASE_URL_2 = "https://jsonplaceholder.typicode.com/todos";
 
-const dataUsers = async () => {
-  const result = await fetch(BASE_URL_1).then((response) => response.json());
-  return result;
-};
+const dataUsers = fetch(BASE_URL_1).then((response) => response.json());
 
-const dataTodos = async () => {
-  const result = await fetch(BASE_URL_2).then((response) => response.json());
-  return result;
-};
+const dataTodos = fetch(BASE_URL_2).then((response) => response.json());
 
-const agrigateUsersTodos = async () => {
+/* const agrigateUsersTodos = async () => {
   try {
-    const usersList = await dataUsers();
-
-    const todosList = await dataTodos();
+    const [usersList, todosList] = await Promise.all([dataUsers, dataTodos]);
 
     return usersList.map((user) => {
       return {
         ...user,
-        todos: todosList.filter(({ userId }) => {
-          return userId === user.id;
-        }),
+        todos: todosList.filter(({ userId }) => userId === user.id),
+      };
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+agrigateUsersTodos().then((data) => console.log(data)); */
+
+//solution number 2
+
+const agrigateUsersTodos = async () => {
+  try {
+    const [usersList, todosList] = await Promise.all([dataUsers, dataTodos]);
+
+    const todosMap = todosList.reduce((acc, todos) => {
+      if (acc[todos.userId]) {
+        acc[todos.userId].push(todos);
+      } else {
+        acc[todos.userId] = [];
+      }
+
+      return acc;
+    }, {});
+
+    return usersList.map((item) => {
+      return {
+        ...item,
+        todos: todosMap[item.id],
       };
     });
   } catch (error) {
