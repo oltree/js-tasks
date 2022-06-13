@@ -30,11 +30,11 @@ const agrigateUsersTodos = async () => {
   try {
     const [usersList, todosList] = await Promise.all([dataUsers, dataTodos]);
 
-    const todosMap = todosList.reduce((acc, todos) => {
-      if (acc[todos.userId]) {
-        acc[todos.userId].push(todos);
+    const todosMap = todosList.reduce((acc, todo) => {
+      if (!acc[todo.userId]) {
+        acc[todo.userId] = [];
       } else {
-        acc[todos.userId] = [];
+        acc[todo.userId].push(todo);
       }
 
       return acc;
