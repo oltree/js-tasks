@@ -109,7 +109,6 @@ const creater = (string) => {
 //console.log(creater("       hello              worLD              "));
 
 //Task9: url wirh max area
-
 const boxarts = [
   {
     width: 200,
@@ -200,3 +199,187 @@ const filterOutNull = (object) => {
   return result;
 };
 //console.log(filterOutNull(objectWithValues));
+
+//Task 14: async-await + setTimeout
+const delay = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
+const someAsyncFunction = async () => {
+  await delay(1000);
+  console.log(1);
+  await delay(2000);
+  console.log(2);
+  await delay(3000);
+  console.log(3);
+};
+//someAsyncFunction();
+
+//Task 15: get info about pokemon
+const getInfoAboutPokemon = async (pokeName) => {
+  const BASE_URL = `https://pokeapi.co/api/v2/pokemon/${pokeName}`;
+  try {
+    const data = await fetch(BASE_URL).then((response) => response.json());
+
+    data.stats = data.stats.reduce((accumulator, { base_stat, stat }) => {
+      accumulator[stat.name] = base_stat;
+
+      return accumulator;
+    }, {});
+
+    return data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+//getInfoAboutPokemon("venusaur").then((data) => console.log(data));
+
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
+const getInfoAboutPokemonsPromiseVersion = new Promise((resolve) => {
+  resolve(fetch(BASE_URL).then((response) => response.json()));
+})
+  .then((data) =>
+    data.results.map((pokemon) =>
+      fetch(pokemon.url).then((response) => response.json())
+    )
+  )
+  .then((data) => Promise.all(data))
+  .then(
+    (data) =>
+      (data = data.map((pokemon) => {
+        pokemon.stats = pokemon.stats.reduce(
+          (accumulator, { base_stat, stat }) => {
+            accumulator[stat.name] = base_stat;
+
+            return accumulator;
+          },
+          {}
+        );
+
+        return pokemon;
+      }))
+  )
+  .then((data) => console.log(/* data */))
+  .catch((error) => console.log(error.message));
+//.finally(() => console.log("finally!"));
+
+//Task 16: asynchrony
+/* console.log("Start");
+
+console.log("Start 2");
+
+function timeout2sec() {
+  console.log("timeout2sec");
+}
+
+window.setTimeout(function () {
+  //можно вместо function применять стрелочную функцию
+  //в большинсве будем использовать анонимную функцию
+  console.log("Inside timeout, after 2000 seconds");
+}, 5000);
+
+window.setTimeout(timeout2sec, 2000); 
+//вызываем без скобочек, потому что с ними она будет вызвана сразу же, а без () мы передаем ее просто как ссылку
+console.log("End"); */
+
+//Task 17: Promise
+/* console.log("request data...");
+//реализовали последовательную ассинхронность с помощью колбеков
+setTimeout(() => {
+  //первый колбек, где описываем логику(первая вложенность)
+  console.log("preparing data..");
+
+  const backendData = {
+    sever: "aws",
+    port: 2000,
+    status: "working",
+  };
+
+  setTimeout(() => {
+    //идет следующая ассинхронность, используем второй колбек и внутри мы уже реализовываем наш функционал(вторая вложенность)
+    backendData.modified = true;
+    console.log("data recerved", backendData);
+  }, 2000);
+}, 2000);
+//этот подход плох тем, что мы получаем достаточно большую вложенность(получаем большое количество колбеков внутри других колбеков)
+
+//промисы нужны для того, чтоб решить данную задачу и упростить работу с ассинхронными операциями
+//делаем то же самое только с промисами
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    console.log("preparing data..");
+    const backendData = {
+      sever: "aws",
+      port: 2000,
+      status: "working",
+    };
+    resolve(backendData); //вызываем ф-ю resolve(которая вызывается тогда, когда закончена ассинхронная операция и закончена УСПЕШНО)
+  }, 2000);
+});
+
+//мы сделали тоже самое с промисами, но дальше идет код, который показывает что могут промисы
+//promise - это промис, вызываеи метод then(читается "когда", промис когда выполнится)
+//данный колбек будет вызван тогда, когда закончится некоторая ассинхронная операция(то есть будет вызван метод resolve)
+//далее нам нужно выполнить вторую ассинхронную операцию, которая написана выше, и для этого нам нужен доступ к переменной backendData, мы тогда передаем ее методу resolve, и данный параметр будет получен в методе then как просто например объект data
+promise.then((data) => {
+  const promise2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      data.modified = true;
+      resolve(data); //сообщаем промису promise2, что он успешно завершился
+    }, 2000);
+  });
+  //внутри промиса мы обращаемся к promise2 и когда он будет успешно выполнен мы будем получать некоторый объект clientData
+  promise2.then((clientData) => {
+    console.log("dara recerved", clientData); //получаем тебе же самые данные + новое свойство modified: true
+  });
+});
+
+//вот результат
+//когда промис выполнится мы делаем следующую ассинхронную операцию, когда она выполнится мы делаем те манипуляции, которые нам нужны(это с помощью then-ов), получается одна вложенность, а операций может быть сколько угодно
+promise
+  .then((data) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        data.modified = true;
+        resolve(data); //сообщаем промису p2, что он успешно завершился
+      }, 2000);
+    });
+  })
+  .then((clientData) => {
+    clientData.fromPromise = true;
+    return clientData;
+  })
+  .then((data) => {
+    console.log("modified", data);
+  })
+  //в случае ошибки мы будем ее отлавливать(для этого нужен метод catch) и выводить
+  .catch((err) => console.error("Error: ", err))
+  //метод finally будет вызван в любом случае, вне зависимости от того была ли ошибка или успешно выполненно
+  .finally(() => console.log("finally!"));
+
+//фишки с промисами
+//есть фунция, которая возвращаем промис и которая вызывает метод resolve через ms
+
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ms);
+  });
+};
+sleep(2000).then(() => console.log("after 2 sec"));
+
+//Pormise all
+const sleep2 = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ms);
+  });
+};
+//пока все не выполнятся, результата не будет
+Promise.all([sleep2(2000), sleep2(5000)]).then(() => {
+  console.log("all promises");
+});
+//этот метод принимает набор промисов, и когда самый первый завершится, он вернет результат
+Promise.race([sleep2(2000), sleep2(5000)]).then(() => {
+  console.log("race promises");
+}); */
