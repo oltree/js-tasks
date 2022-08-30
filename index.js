@@ -218,7 +218,7 @@ const someAsyncFunction = async () => {
 //someAsyncFunction();
 
 //Task 15: get info about pokemon
-const getInfoAboutPokemon = async (pokeName) => {
+/* const getInfoAboutPokemon = async (pokeName) => {
   const BASE_URL = `https://pokeapi.co/api/v2/pokemon/${pokeName}`;
   try {
     const data = await fetch(BASE_URL).then((response) => response.json());
@@ -233,10 +233,10 @@ const getInfoAboutPokemon = async (pokeName) => {
   } catch (error) {
     console.log(error.message);
   }
-};
+}; */
 //getInfoAboutPokemon("venusaur").then((data) => console.log(data));
 
-const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
+/* const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 const getInfoAboutPokemonsPromiseVersion = new Promise((resolve) => {
   resolve(fetch(BASE_URL).then((response) => response.json()));
 })
@@ -261,8 +261,8 @@ const getInfoAboutPokemonsPromiseVersion = new Promise((resolve) => {
         return pokemon;
       }))
   )
-  .then((data) => console.log(/* data */))
-  .catch((error) => console.log(error.message));
+  .then((data) => console.log(data))
+  .catch((error) => console.log(error.message)); */
 //.finally(() => console.log("finally!"));
 
 //Task 16: asynchrony
@@ -383,3 +383,45 @@ Promise.all([sleep2(2000), sleep2(5000)]).then(() => {
 Promise.race([sleep2(2000), sleep2(5000)]).then(() => {
   console.log("race promises");
 }); */
+
+//Task 18: sum of even and odd numbers
+const evenAndOddnumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10];
+
+const sumEvenAndOdd = (numbers) => {
+  return numbers.reduce(
+    (accumulator, number) => {
+      if (number % 2 === 0) {
+        accumulator.even += number;
+      } else {
+        accumulator.odd += number;
+      }
+      return accumulator;
+    },
+    { even: 0, odd: 0 }
+  );
+};
+//console.log(sumEvenAndOdd(evenAndOddnumbers));
+
+//Task 19: limit string length
+const limitStringLength = (string, n, symb) => {
+  if ((!n && !symb) || string.length < n) return string;
+  symb = symb || "...";
+
+  return `${string.slice(0, n) + symb}`;
+};
+//console.log(limitStringLength("Hello, my best friend", 5, "!"));
+
+//Task 20: split string into chunks
+const cutString = (string, n) => {
+  let result = [];
+  for (let i = 0; i < string.length; i += n) {
+    result.push(string.substr(i, n));
+  }
+
+  return result;
+};
+//console.log(cutString("relationship", 3));
+
+//Task 21: remove spaces from a string
+const removeSpaces = (string) => string.replace(/\s+/g, " ");
+//console.log(removeSpaces("     Hello,       World!"));
