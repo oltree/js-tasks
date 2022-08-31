@@ -425,3 +425,12 @@ const cutString = (string, n) => {
 //Task 21: remove spaces from a string
 const removeSpaces = (string) => string.replace(/\s+/g, " ");
 //console.log(removeSpaces("     Hello,       World!"));
+
+//Task 22: unique letters
+const uniqueLetters = (str) => {
+  return str
+    .split("")
+    .filter((value) => str.lastIndexOf(value) === str.indexOf(value))
+    .join(",");
+};
+//console.log(uniqueLetters("anaconda"));
