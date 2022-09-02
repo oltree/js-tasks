@@ -427,10 +427,27 @@ const removeSpaces = (string) => string.replace(/\s+/g, " ");
 //console.log(removeSpaces("     Hello,       World!"));
 
 //Task 22: unique letters
-const uniqueLetters = (str) => {
-  return str
+const uniqueLetters = (string) => {
+  return string
     .split("")
-    .filter((value) => str.lastIndexOf(value) === str.indexOf(value))
+    .filter((letter) => string.lastIndexOf(letter) === string.indexOf(letter))
     .join(",");
 };
-//console.log(uniqueLetters("anaconda"));
+//onsole.log(uniqueLetters("anaconda"));
+
+//Task 23: array with arrays
+const flattened = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+].reduce((current, next) => current.concat(next), []);
+//console.log(flattened);
+
+//Task 24: move 0 to the right
+const moveZeros = (arr) =>
+  arr.reduceRight(
+    (accumulator, value) =>
+      value === 0 ? [...accumulator, value] : [value, ...accumulator],
+    []
+  );
+//console.log(moveZeros([false, 1, 0, 2, 3, 4, 0, "a", 4, 9]));
