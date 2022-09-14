@@ -463,4 +463,4 @@ var solution = function (firstArray, secondArray) {
   return result.reduce((acc, num) => acc + num, 0) / result.length;
 };
 
-..console.log(solution([-1, 0], [0, -1]));
+//console.log(solution([-1, 0], [0, -1]));
