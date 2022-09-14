@@ -451,3 +451,16 @@ const moveZeros = (arr) =>
     []
   );
 //console.log(moveZeros([false, 1, 0, 2, 3, 4, 0, "a", 4, 9]));
+
+var solution = function (firstArray, secondArray) {
+  let result = [];
+  for (let i = 0; i < firstArray.length; i++) {
+    firstArray[i] > secondArray[i]
+      ? result.push(Math.pow(firstArray[i] - secondArray[i], 2))
+      : result.push(Math.pow(secondArray[i] - firstArray[i], 2));
+  }
+
+  return result.reduce((acc, num) => acc + num, 0) / result.length;
+};
+
+..console.log(solution([-1, 0], [0, -1]));
